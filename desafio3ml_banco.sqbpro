@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/xampp/htdocs/projeto3mlbanco/desafio3ml_banco.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser query pragmas" current="2"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1529"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,22:mainpedido_compra_produtos"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="cad_grupo_produtos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="50"/><column index="2" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="cad_produto" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="171"/><column index="3" value="96"/><column index="4" value="77"/><column index="5" value="45"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="cad_unidade" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="pedido_compra" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="57"/><column index="2" value="89"/><column index="3" value="98"/><column index="4" value="101"/><column index="5" value="109"/><column index="6" value="82"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="pedido_compra_produtos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="2" mode="0"/></sort><column_widths><column index="1" value="140"/><column index="2" value="127"/><column index="3" value="88"/><column index="4" value="40"/><column index="5" value="45"/><column index="6" value="68"/><column index="7" value="41"/><column index="8" value="80"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE cad_unidade (
+    sigla TEXT PRIMARY KEY,
+    descricao TEXT
+);
+
+INSERT INTO cad_unidade (sigla, descricao) VALUES ('KG', 'Quilograma');
+INSERT INTO cad_unidade (sigla, descricao) VALUES ('L', 'Litro');
+INSERT INTO cad_unidade (sigla, descricao) VALUES ('CX', 'Caixa');
+INSERT INTO cad_unidade (sigla, descricao) VALUES ('FD', 'Fardo');
+INSERT INTO cad_unidade (sigla, descricao) VALUES ('UND', 'Unidade');
+
+SELECT * FROM cad_unidade;
+
+
+
+CREATE TABLE cad_grupo_produtos (
+    codigo INTEGER PRIMARY KEY,
+    descricao TEXT
+);
+
+INSERT INTO cad_grupo_produtos (codigo, descricao) VALUES (1, 'Frios e Laticinios');
+INSERT INTO cad_grupo_produtos (codigo, descricao) VALUES (2, 'Cereais');
+INSERT INTO cad_grupo_produtos (codigo, descricao) VALUES (3, 'Enlatados'); 
+
+SELECT * FROM cad_grupo_produtos;
+
+CREATE TABLE cad_produto (
+    cod INTEGER PRIMARY KEY,
+    descricao TEXT,
+    sigla_unidade TEXT,
+    cod_grupo INTEGER,
+    preco REAL,
+    FOREIGN KEY (sigla_unidade) REFERENCES cad_unidade(sigla),
+    FOREIGN KEY (cod_grupo) REFERENCES cad_grupo_produtos(codigo)
+);
+
+INSERT INTO cad_produto (cod, descricao, sigla_unidade, cod_grupo, preco) VALUES (1, 'Feijão Preto 1kg', 'KG', 2, 8.99);
+INSERT INTO cad_produto (cod, descricao, sigla_unidade, cod_grupo, preco) VALUES (2, 'Leite Integral 1lt', 'L', 3, 4.59);
+INSERT INTO cad_produto (cod, descricao, sigla_unidade, cod_grupo, preco) VALUES (3, 'Bolacha Premium 6unds', 'CX', 2, 35.24);
+INSERT INTO cad_produto (cod, descricao, sigla_unidade, cod_grupo, preco) VALUES (4, 'Chaque Ponta de Agulha 5kg', 'FD', 1, 58.95);
+INSERT INTO cad_produto (cod, descricao, sigla_unidade, cod_grupo, preco) VALUES (5, 'Extrato de Tomate 256g', 'UND', 3, 2.99);
+
+SELECT * FROM cad_produto;
+
+
+CREATE TABLE pedido_compra (
+    numero INTEGER,
+    data_pedido TEXT,
+    data_entrega TEXT,
+    valor_produto REAL,
+    valor_desconto REAL,
+    valor_frete REAL,
+    PRIMARY KEY (numero, data_pedido)
+);
+
+
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (1, '2023-08-10', '2023-08-12', 58.95, 1.0, 0.0); *
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (2, '2023-08-12', '2023-08-15', 2.99, 0.0, 5.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (3, '2023-08-15', '2023-08-18', 8.99, 0.0, 5.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (4, '2023-08-15', '2023-08-20', 35.24, 0.0, 5.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (5, '2023-08-23', '2023-08-26', 58.95, 1.0, 0.0);  *
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (6, '2023-08-29', '2023-09-01', 8.99, 0.0, 0.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (7, '2023-09-04', '2023-09-06', 4.59, 2.0, 5.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (8, '2023-09-05', '2023-09-07', 58.95, 0.0, 0.0);
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (9, '2023-09-12', '2023-09-15', 4.59, 1.0, 0.0);   *
+INSERT INTO pedido_compra (numero, data_pedido, data_entrega, valor_produto, valor_desconto, valor_frete) VALUES (10, '2023-09-17', '2023-09-20', 35.24, 2.0, 5.0);
+
+SELECT * FROM pedido_compra;
+
+
+CREATE TABLE pedido_compra_produtos (
+    posicao_lancamento INTEGER PRIMARY KEY,
+    numero_pedido INTEGER,
+    cod_prod INTEGER,
+    qtde INTEGER,
+    preco REAL,
+    desconto REAL,
+    frete REAL,
+    valor_total REAL
+);
+
+-- 3 pedidos com desconto (3 produtos diferentes, quantidades diferentes, preços diferentes)
+-- Pedido 1
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+    (1, 1, 1, 2, 8.99, 0.3, 0.0, 17.95),
+    (2, 1, 2, 3, 4.59, 0.5, 0.0, 13.72),
+    (3, 1, 3, 1, 35.24, 1.0, 0.0, 34.24);
+
+-- 2)
+-- Pedido 2
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+    (4, 2, 4, 1, 58.95, 1.5, 0.0, 57.45),
+    (5, 2, 5, 2, 2.99, 0.3, 0.0, 5.95),
+    (6, 2, 1, 1, 8.99, 0.5, 0.0, 8.45);
+
+-- 3)
+--Pedido 3
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+    (7, 3, 5, 3, 2.99, 1.5, 0.0, 7.47),
+    (8, 3, 2, 2, 4.59, 0.3, 0.0, 9.15),
+    (9, 3, 4, 1, 58.95, 2.0, 0.0, 56.95);
+
+
+-- 2 pedidos com desconto e com frete (3 produtos diferentes, quantidades diferentes, preços diferentes)
+--Pedido 4
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total) 
+VALUES 
+	(10, 4, 2, 6, 4.59, 1.0, 5.0, 31.54),
+	(11, 4, 5, 2, 2.99, 0.3, 5.0, 7.69),
+	(12, 4, 1, 1, 8.99, 0.5, 5.0, 13.45);
+
+-- Pedido 5
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total) 
+VALUES 
+	(13, 5, 3, 4, 35.24, 2.0, 5.0, 143.96),
+	(14, 5, 4, 3, 58.95, 1.5, 5.0, 180.35),
+	(15, 5, 1, 8, 8.99, 0.3, 5.0, 76.62);
+
+--3 pedidos com frete (3 produtos diferentes, quantidades diferentes, preços diferentes)
+-- Pedido 6
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+	(16, 6, 4, 3, 58.95, 0.0, 5.0, 181.85),
+	(17, 6, 2, 2, 4.59, 0.0, 5.0, 14.18),
+	(18, 6, 5, 50, 2.99, 0.0, 5.0, 154.5);
+	
+-- Pedido 7
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+	(19, 7, 5, 12, 2.99, 0.0, 5.0, 40.88),
+	(20, 7, 2, 12, 4.59, 0.0, 5.0, 60.08),
+	(21, 7, 1, 12, 8.99, 0.0, 5.0, 112.88);
+	
+-- Pedido 8
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+	(22, 8, 2, 6, 4.59, 0.0, 5.0, 32.54),
+	(23, 8, 1, 9, 8.99, 0.0, 5.0, 85.91),
+	(24, 8, 3, 5, 35.24, 0.0, 5.0, 181.2);
+
+--2 pedidos sem desconto e sem frete (3 produtos diferentes, quantidades diferentes, preços diferentes)
+-- Pedido 9
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+	(25, 9, 5, 12, 2.99, 0.0, 0.0, 35.88),
+	(26, 9, 4, 4, 58.95, 0.0, 0.0, 235.80),
+	(27, 9, 1, 15, 8.99, 0.0, 0.0, 134.95);
+	
+-- Pedido 10
+INSERT INTO pedido_compra_produtos (posicao_lancamento, numero_pedido, cod_prod, qtde, preco, desconto, frete, valor_total)
+VALUES
+	(28, 10, 2, 6, 4.59, 0.0, 0.0, 27.54),
+	(29, 10, 1, 1, 8.99, 0.0, 0.0, 8.99),
+	(30, 10, 4, 2, 58.95, 0.0, 0.0, 117.90);
+
+SELECT * FROM pedido_compra_produtos;
+
+
+-- INNER JOIN
+SELECT * FROM pedido_compra
+INNER JOIN pedido_compra_produtos ON pedido_compra.numero = pedido_compra_produtos.numero_pedido;
+
+SELECT valor_frete, valor_produto FROM pedido_compra
+INNER JOIN pedido_compra_produtos ON pedido_compra.numero = pedido_compra_produtos.numero_pedido;
+
+-- LEFT JOIN
+SELECT * FROM pedido_compra
+LEFT JOIN pedido_compra_produtos ON pedido_compra.numero = pedido_compra_produtos.numero_pedido;
+
+SELECT valor_frete, valor_produto FROM pedido_compra
+LEFT JOIN pedido_compra_produtos ON pedido_compra.numero = pedido_compra_produtos.numero_pedido;
+
+
+-- 1) Relatório de Produtos por Categoria
+SELECT cad_grupo_produtos.descricao AS categoria, cad_produto.descricao AS produto
+FROM cad_produto
+INNER JOIN cad_grupo_produtos ON cad_produto.cod_grupo = cad_grupo_produtos.codigo;
+
+-- 2) Relatório de Pedido Sintetico
+
+
+-- 3) Relatório de Pedidos Analiticos
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
